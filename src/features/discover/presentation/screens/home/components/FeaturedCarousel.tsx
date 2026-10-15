@@ -9,6 +9,7 @@ import { AppText } from '@shared/core/presentation/components/AppText';
 import { useReduceMotion } from '@shared/core/presentation/hooks/useReduceMotion';
 import { scrollPage } from '@shared/core/presentation/mappers/scrollPage';
 import { mediaRefKey, type MediaSummary } from '@shared/domain/model/media';
+import type { TitleLogo } from '@shared/domain/model/titleLogo';
 import { RatingBadge } from '@shared/presentation/components/RatingBadge';
 
 export type FeaturedCarouselProps = {
@@ -16,6 +17,17 @@ export type FeaturedCarouselProps = {
   readonly onSelect: (media: MediaSummary) => void;
   /** Moves on to the next card by itself; off while the screen is out of sight. */
   readonly autoplay: boolean;
+  /** The title card to show instead of the typed title; null types it, undefined is loading. */
+  readonly logoOf: (media: MediaSummary) => TitleLogo | null | undefined;
+};
+
+/** The tallest a logo stands on a card; wide wordmarks are capped by width instead. */
+const logoMaxHeight = 64;
+
+/** The logo's box inside a card of the given width, keeping the logo's own proportions. */
+const logoSize = (logo: TitleLogo, cardWidth: number) => {
+  const width = Math.min(cardWidth * 0.62, logoMaxHeight * logo.aspectRatio);
+  return { width, height: width / logo.aspectRatio };
 };
 
 /** How long a card stays before the carousel moves on by itself. */
@@ -25,7 +37,7 @@ const autoplayDelayMs = 5000;
  * Large artwork cards that snap one at a time, with the next one peeking in. The dots follow the
  * finger: the current one stretches into a pill and hands it to the next as the cards move.
  */
-export const FeaturedCarousel = ({ items, onSelect, autoplay }: FeaturedCarouselProps) => {
+export const FeaturedCarousel = ({ items, onSelect, autoplay, logoOf }: FeaturedCarouselProps) => {
   const { theme } = useUnistyles();
   const t = useTranslate();
   const { width } = useWindowDimensions();
@@ -83,37 +95,54 @@ export const FeaturedCarousel = ({ items, onSelect, autoplay }: FeaturedCarousel
           setPage(scrollPage(event.nativeEvent, interval));
           setTouching(false);
         }}
-        renderItem={({ item }) => (
-          <AppPressable
-            feedback="scale"
-            onPress={() => {
-              onSelect(item);
-            }}
-            accessibilityLabel={item.title}
-            style={{ width: cardWidth }}
-          >
-            <View style={styles.card}>
-              <AppImage uri={item.backdrop?.large ?? null} fill recyclingKey={mediaRefKey(item.ref)} />
-              <AppScrim />
-              <View style={styles.caption}>
-                <AppText role="label" scale="small" color="onScrim">
-                  {t({ key: 'discover.featured' }).toUpperCase()}
-                </AppText>
-                <AppText role="display" scale="small" color="onScrim" numberOfLines={2}>
-                  {item.title}
-                </AppText>
-                <View style={styles.meta}>
-                  {item.rating !== null && <RatingBadge rating={item.rating} variant="onImage" />}
-                  {item.year !== null && (
-                    <AppText role="label" scale="large" color="onScrim">
-                      {item.year}
+        renderItem={({ item }) => {
+          const logo = logoOf(item);
+          return (
+            <AppPressable
+              feedback="scale"
+              onPress={() => {
+                onSelect(item);
+              }}
+              accessibilityLabel={item.title}
+              style={{ width: cardWidth }}
+            >
+              <View style={styles.card}>
+                <AppImage uri={item.backdrop?.large ?? null} fill recyclingKey={mediaRefKey(item.ref)} />
+                <AppScrim />
+                <View style={styles.caption}>
+                  <AppText role="label" scale="small" color="onScrim">
+                    {t({ key: 'discover.featured' }).toUpperCase()}
+                  </AppText>
+                  {logo === undefined ? (
+                    <View style={{ height: logoMaxHeight }} />
+                  ) : logo === null ? (
+                    <AppText role="display" scale="small" color="onScrim" numberOfLines={2}>
+                      {item.title}
                     </AppText>
+                  ) : (
+                    <View style={styles.logo}>
+                      <AppImage
+                        uri={logo.image.medium}
+                        fit="contain"
+                        transparent
+                        style={logoSize(logo, cardWidth)}
+                      />
+                    </View>
                   )}
+                  <View style={styles.meta}>
+                    {item.rating !== null && <RatingBadge rating={item.rating} variant="onImage" />}
+                    {item.year !== null && (
+                      <AppText role="label" scale="large" color="onScrim">
+                        {item.year}
+                      </AppText>
+                    )}
+                  </View>
                 </View>
               </View>
-            </View>
-          </AppPressable>
-        )}
+            </AppPressable>
+          );
+        }}
+        extraData={logoOf}
       />
       <View style={styles.dots} accessible={false}>
         {items.map((item, index) => {
@@ -174,6 +203,10 @@ const styles = StyleSheet.create((theme) => ({
   caption: {
     padding: theme.spacing.l,
     gap: theme.spacing.xs,
+  },
+  logo: {
+    alignSelf: 'flex-start',
+    marginVertical: theme.spacing.xs,
   },
   meta: {
     flexDirection: 'row',

@@ -3,6 +3,7 @@ import type { ExternalLink } from '@shared/domain/model/externalLink';
 import type { Genre } from '@shared/domain/model/genre';
 import type { ImageSet, SizedImage } from '@shared/domain/model/imageSet';
 import type { MediaSummary } from '@shared/domain/model/media';
+import type { TitleLogo } from '@shared/domain/model/titleLogo';
 
 export type CastMember = {
   readonly personId: number;
@@ -105,13 +106,6 @@ export type CollectionSummary = {
   readonly name: string;
   readonly poster: ImageSet | null;
   readonly backdrop: ImageSet | null;
-};
-
-/** The title's typeset logo ("title card"), transparent, to lay over artwork. */
-export type TitleLogo = {
-  readonly image: ImageSet;
-  /** Width over height; logos range from square marks to long wordmarks. */
-  readonly aspectRatio: number;
 };
 
 export type TitleDetails = {

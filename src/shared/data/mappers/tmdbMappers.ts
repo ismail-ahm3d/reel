@@ -3,6 +3,7 @@ import type { ExternalLink } from '@shared/domain/model/externalLink';
 import type { ImageSet, SizedImage } from '@shared/domain/model/imageSet';
 import type { MediaSummary, MediaType, Page } from '@shared/domain/model/media';
 import type { PersonSummary } from '@shared/domain/model/person';
+import type { TitleLogo } from '@shared/domain/model/titleLogo';
 import type {
   CompanyDto,
   ExternalIdsDto,
@@ -138,4 +139,18 @@ export const toExternalLinks = (
   if (present(ids.wikidata_id))
     links.push({ kind: 'wikidata', url: `https://www.wikidata.org/wiki/${ids.wikidata_id}` });
   return links;
+};
+
+/** The best-voted logo in the app language, else English, else one without text language. */
+export const toTitleLogo = (
+  logos: readonly ImageDto[] | null | undefined,
+  language: string,
+): TitleLogo | null => {
+  const rank = (logo: ImageDto): number =>
+    logo.iso_639_1 === language ? 0 : logo.iso_639_1 === 'en' ? 1 : logo.iso_639_1 ? 3 : 2;
+  const best = [...(logos ?? [])].sort(
+    (a, b) => rank(a) - rank(b) || (b.vote_average ?? 0) - (a.vote_average ?? 0),
+  )[0];
+  const image = best === undefined ? null : toImageSet(best.file_path, 'titleLogo');
+  return best === undefined || image === null ? null : { image, aspectRatio: best.aspect_ratio };
 };

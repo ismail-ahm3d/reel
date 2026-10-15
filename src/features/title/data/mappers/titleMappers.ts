@@ -6,6 +6,7 @@ import {
   toPage,
   toRating,
   toSizedImages,
+  toTitleLogo,
   toYear,
 } from '@shared/data/mappers/tmdbMappers';
 import type { ImageDto, MediaItemDto } from '@shared/data/datasources/remote/tmdbDto';
@@ -20,7 +21,6 @@ import type {
   ReleaseKind,
   Review,
   TitleDetails,
-  TitleLogo,
   Video,
   VideoKind,
   WatchOptions,
@@ -87,17 +87,6 @@ const toWatchOptions = (region: RegionProvidersDto | undefined): WatchOptions | 
   return any ? options : null;
 };
 
-/** The best-voted logo in the app language, else English, else one without text language. */
-const toLogo = (logos: readonly ImageDto[] | null | undefined, language: string): TitleLogo | null => {
-  const rank = (logo: ImageDto): number =>
-    logo.iso_639_1 === language ? 0 : logo.iso_639_1 === 'en' ? 1 : logo.iso_639_1 ? 3 : 2;
-  const best = [...(logos ?? [])].sort(
-    (a, b) => rank(a) - rank(b) || (b.vote_average ?? 0) - (a.vote_average ?? 0),
-  )[0];
-  const image = best === undefined ? null : toImageSet(best.file_path, 'titleLogo');
-  return best === undefined || image === null ? null : { image, aspectRatio: best.aspect_ratio };
-};
-
 /** Gallery images without text first (they read in every language), best voted first. */
 const byGalleryOrder = (images: readonly ImageDto[] | null | undefined): readonly ImageDto[] =>
   [...(images ?? [])].sort(
@@ -159,7 +148,7 @@ const toReleases = (dto: MovieDetailsDto, region: string): readonly Release[] =>
 
 /** Shared by movies and shows: artwork, companies, links. */
 const extras = (dto: MovieDetailsDto | TvDetailsDto, language: string) => ({
-  logo: toLogo(dto.images?.logos, language),
+  logo: toTitleLogo(dto.images?.logos, language),
   images: {
     backdrops: toSizedImages(byGalleryOrder(dto.images?.backdrops), 'galleryBackdrop'),
     posters: toSizedImages(byGalleryOrder(dto.images?.posters), 'galleryPoster'),

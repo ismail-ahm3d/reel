@@ -63,7 +63,7 @@ export const makeAppDependencies = ({ storage, locale, language, settings }: App
   const genres = makeGenreRepository({ remote: makeGenreRemoteDataSource({ http }) });
 
   return {
-    discover: makeDiscover({ http, clock, region: locale.region }),
+    discover: makeDiscover({ http, clock, region: locale.region, language }),
     search: makeSearch({ http }),
     title: makeTitle({ http, region: locale.region, language }),
     people: makePeople({ http }),

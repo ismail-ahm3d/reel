@@ -2,10 +2,12 @@ import { z } from 'zod';
 import type { Clock } from '@shared/core/domain/clock';
 import type { HttpClient, QueryParams } from '@shared/core/data/http/httpClient';
 import { remoteOutcome } from '@shared/core/data/remoteOutcome';
-import type { MediaType } from '@shared/domain/model/media';
+import type { MediaRef, MediaType } from '@shared/domain/model/media';
 import {
+  imageDtoSchema,
   mediaItemDtoSchema,
   pageDtoSchema,
+  type ImageDto,
   type MediaItemDto,
   type PageDto,
 } from '@shared/data/datasources/remote/tmdbDto';
@@ -29,6 +31,8 @@ export const providerListDtoSchema = z.object({
 
 export type ProviderListDto = z.infer<typeof providerListDtoSchema>;
 
+const logoListDtoSchema = z.object({ logos: z.array(imageDtoSchema).nullish() });
+
 /** Every function may throw AppError; nothing else. */
 export type DiscoverRemoteDataSource = {
   readonly category: (type: MediaType, category: Category, page: number) => Promise<PageDto<MediaItemDto>>;
@@ -38,6 +42,8 @@ export type DiscoverRemoteDataSource = {
     page: number,
   ) => Promise<PageDto<MediaItemDto>>;
   readonly providers: (type: MediaType) => Promise<ProviderListDto>;
+  /** A title's logos in the app language, English or no language, for the featured cards. */
+  readonly logos: (ref: MediaRef) => Promise<readonly ImageDto[]>;
 };
 
 const pageSchema = pageDtoSchema(mediaItemDtoSchema);
@@ -112,10 +118,13 @@ export const makeDiscoverRemoteDataSource = ({
   http,
   clock,
   region,
+  language,
 }: {
   http: HttpClient;
   clock: Clock;
   region: string;
+  /** ISO 639-1, to pick logos in the user's language. */
+  language: string;
 }): DiscoverRemoteDataSource => ({
   category: (type, category, page) =>
     remoteOutcome(async () => {
@@ -147,5 +156,14 @@ export const makeDiscoverRemoteDataSource = ({
   providers: (type) =>
     remoteOutcome(async () =>
       providerListDtoSchema.parse(await http.get(`watch/providers/${type}`, { watch_region: region })),
+    ),
+  logos: (ref) =>
+    remoteOutcome(
+      async () =>
+        logoListDtoSchema.parse(
+          await http.get(`${ref.type}/${ref.id}/images`, {
+            include_image_language: [...new Set([language, 'en', 'null'])].join(','),
+          }),
+        ).logos ?? [],
     ),
 });
