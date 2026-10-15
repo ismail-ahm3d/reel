@@ -1,4 +1,5 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
+import { largeTitles } from '@shell/presentation/largeTitles';
 import { useTranslate } from '@shared/core/presentation/i18n/useTranslate';
 import { isMediaType } from '@shared/domain/model/media';
 import { useDependencies } from '@shell/presentation/dependencies';
@@ -15,7 +16,10 @@ export default function CategoryRoute() {
   return (
     <>
       <Stack.Screen
-        options={{ title: t({ key: categoryTitleKey(type, category) }), headerLargeTitleEnabled: true }}
+        options={{
+          title: t({ key: categoryTitleKey(type, category) }),
+          headerLargeTitleEnabled: largeTitles,
+        }}
       />
       <CategoryScreen
         type={type}

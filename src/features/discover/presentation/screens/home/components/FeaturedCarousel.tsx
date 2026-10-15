@@ -8,6 +8,7 @@ import { AppScrim } from '@shared/core/presentation/components/AppScrim';
 import { AppText } from '@shared/core/presentation/components/AppText';
 import { mediaRefKey, type MediaSummary } from '@shared/domain/model/media';
 import { RatingBadge } from '@shared/presentation/components/RatingBadge';
+import { scrollPage } from '@shared/core/presentation/mappers/scrollPage';
 
 export type FeaturedCarouselProps = {
   readonly items: readonly MediaSummary[];
@@ -34,7 +35,7 @@ export const FeaturedCarousel = ({ items, onSelect }: FeaturedCarouselProps) => 
         decelerationRate="fast"
         contentContainerStyle={styles.content}
         onMomentumScrollEnd={(event) => {
-          setPage(Math.round(event.nativeEvent.contentOffset.x / interval));
+          setPage(scrollPage(event.nativeEvent, interval));
         }}
         renderItem={({ item }) => (
           <AppPressable

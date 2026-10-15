@@ -72,7 +72,7 @@ const styles = StyleSheet.create((theme, rt) => ({
   },
   separator: {
     height: theme.border.hairline,
-    marginLeft: theme.spacing.l,
+    marginStart: theme.spacing.l,
     backgroundColor: theme.colors.outline,
   },
 }));

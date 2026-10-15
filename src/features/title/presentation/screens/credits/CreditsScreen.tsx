@@ -8,6 +8,7 @@ import { AppLoading } from '@shared/core/presentation/components/AppLoading';
 import { AppPressable } from '@shared/core/presentation/components/AppPressable';
 import { AppText } from '@shared/core/presentation/components/AppText';
 import { errorText } from '@shared/core/presentation/mappers/errorText';
+import { departmentText } from '@shared/presentation/mappers/departmentText';
 import {
   useCreditsScreen,
   type CreditsScreenProps,
@@ -32,7 +33,10 @@ export const CreditsScreen = (props: CreditsScreenProps) => {
       renderSectionHeader={({ section }) => (
         <View style={styles.sectionHeader}>
           <AppText role="title" scale="small" color="onSurfaceVariant" accessibilityRole="header">
-            {(section.title === 'cast' ? t({ key: 'title.cast' }) : section.title).toUpperCase()}
+            {(section.title === 'cast'
+              ? t({ key: 'title.cast' })
+              : departmentText(section.title, t)
+            ).toUpperCase()}
           </AppText>
         </View>
       )}

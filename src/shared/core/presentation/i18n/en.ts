@@ -177,7 +177,6 @@ export const en: Readonly<Record<string, string>> = {
   'gallery.kind.posters': 'Posters',
   'gallery.kind.profiles': 'Photos',
   'gallery.kind.stills': 'Stills',
-  'people.acting': 'Acting',
   'people.alsoKnownAs': 'Also known as {{names}}',
   'people.photos': 'Photos',
   'people.noCreditsTitle': 'No Credits',
@@ -295,4 +294,18 @@ export const en: Readonly<Record<string, string>> = {
   'title.allInWatchlist': 'All in Watchlist',
 
   'account.removeMessage': 'You can add them back anytime from their pages.',
+
+  'department.acting': 'Acting',
+  'department.directing': 'Directing',
+  'department.writing': 'Writing',
+  'department.production': 'Production',
+  'department.camera': 'Camera',
+  'department.editing': 'Editing',
+  'department.sound': 'Sound',
+  'department.art': 'Art',
+  'department.costume': 'Costume & Make-Up',
+  'department.visualEffects': 'Visual Effects',
+  'department.crew': 'Crew',
+  'department.lighting': 'Lighting',
+  'department.creator': 'Creator',
 };

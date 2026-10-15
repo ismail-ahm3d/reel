@@ -12,7 +12,7 @@ import { ImageRail } from '@shared/presentation/components/ImageRail';
 import { MediaRail } from '@shared/presentation/components/MediaRail';
 import { MediaRow } from '@shared/presentation/components/MediaRow';
 import { SectionHeader } from '@shared/presentation/components/SectionHeader';
-import { actingDepartment } from '@features/people/domain/model/personDetails';
+import { departmentText } from '@shared/presentation/mappers/departmentText';
 import { PersonHeader } from '@features/people/presentation/screens/person/components/PersonHeader';
 import {
   usePersonScreen,
@@ -77,7 +77,7 @@ export const PersonScreen = (props: PersonScreenProps) => {
                 {view.departments.map((department) => (
                   <AppChip
                     key={department}
-                    label={department === actingDepartment ? t({ key: 'people.acting' }) : department}
+                    label={departmentText(department, t)}
                     selected={view.department === department}
                     onPress={() => {
                       view.setDepartment(department);

@@ -23,6 +23,7 @@ Storage: expo-sqlite key-value store. Translations: English and Arabic dictionar
 ## Repo-specific rules
 - The root is a stack holding `(tabs)` and the `settings` modal. Tabs are native (`expo-router/unstable-native-tabs` on SDK 57) and each tab owns a native stack. Shared detail routes live once in `app/(tabs)/(movies,tv,search,watchlist)/` (array group syntax); anchors are in that group's `_layout.tsx`.
 - `src/shell/app/boot.ts` runs before the first frame: saved settings, theme, layout direction, then the dependencies for that language. Every new string needs a key in both `en.ts` and `ar.ts`; use `marginStart`/`End` and `directional` icons so layouts mirror in Arabic.
+- Right-to-left details: routes ask for large titles through `largeTitles` (`src/shell/presentation/largeTitles.*.ts`; off in Arabic on iOS, where iOS 26 breaks Arabic large titles), pagers read their page with `scrollPage` (offsets are mirrored in RTL), `AppText` drops letter spacing in RTL, and TMDB department names go through `departmentText`.
 - Route callbacks come from `src/shell/presentation/navigation.ts` (`appNavigation`); routes do not build paths themselves.
 - The gallery (`app/gallery.tsx`) and Settings (`app/settings.tsx`) are modals on the root stack; `app/auth.tsx` catches the TMDB sign-in redirect.
 - Account UI reaches the title page and Settings through slot props filled by the routes (`docs/decisions/0002-account-slots.md`).

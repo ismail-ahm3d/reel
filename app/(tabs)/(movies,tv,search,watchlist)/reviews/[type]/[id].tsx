@@ -1,4 +1,5 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
+import { largeTitles } from '@shell/presentation/largeTitles';
 import * as WebBrowser from 'expo-web-browser';
 import { useTranslate } from '@shared/core/presentation/i18n/useTranslate';
 import { isMediaType } from '@shared/domain/model/media';
@@ -12,7 +13,7 @@ export default function ReviewsRoute() {
   if (!isMediaType(type)) return null;
   return (
     <>
-      <Stack.Screen options={{ title: t({ key: 'title.reviews' }), headerLargeTitleEnabled: true }} />
+      <Stack.Screen options={{ title: t({ key: 'title.reviews' }), headerLargeTitleEnabled: largeTitles }} />
       <ReviewsScreen
         mediaRef={{ type, id: Number(id) }}
         useCases={title}

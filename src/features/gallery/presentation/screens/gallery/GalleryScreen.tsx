@@ -8,6 +8,7 @@ import { AppImage } from '@shared/core/presentation/components/AppImage';
 import { AppLoading } from '@shared/core/presentation/components/AppLoading';
 import { AppText } from '@shared/core/presentation/components/AppText';
 import { errorText } from '@shared/core/presentation/mappers/errorText';
+import { scrollPage } from '@shared/core/presentation/mappers/scrollPage';
 import {
   useGalleryScreen,
   type GalleryScreenProps,
@@ -34,7 +35,7 @@ export const GalleryScreen = (props: GalleryScreenProps) => {
         getItemLayout={(_, index) => ({ length: width, offset: width * index, index })}
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={(event) => {
-          view.showPage(Math.round(event.nativeEvent.contentOffset.x / width));
+          view.showPage(scrollPage(event.nativeEvent, width));
         }}
         renderItem={({ item, index }) => (
           <ScrollView
