@@ -308,4 +308,6 @@ export const en: Readonly<Record<string, string>> = {
   'department.crew': 'Crew',
   'department.lighting': 'Lighting',
   'department.creator': 'Creator',
+
+  'common.listSeparator': ', ',
 };

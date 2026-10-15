@@ -1,10 +1,12 @@
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
+import { useTranslate } from '@shared/core/presentation/i18n/useTranslate';
 import { AppIcon } from '@shared/core/presentation/components/AppIcon';
 import { AppImage } from '@shared/core/presentation/components/AppImage';
 import { AppPressable } from '@shared/core/presentation/components/AppPressable';
 import { AppText } from '@shared/core/presentation/components/AppText';
 import type { PersonSummary } from '@shared/domain/model/person';
+import { departmentText } from '@shared/presentation/mappers/departmentText';
 
 export type PersonRowProps = {
   readonly person: PersonSummary;
@@ -12,7 +14,11 @@ export type PersonRowProps = {
 };
 
 export const PersonRow = ({ person, onPress }: PersonRowProps) => {
-  const line = [person.department, person.knownFor.slice(0, 2).join(', ')]
+  const t = useTranslate();
+  const line = [
+    person.department === null ? null : departmentText(person.department, t),
+    person.knownFor.slice(0, 2).join(t({ key: 'common.listSeparator' })),
+  ]
     .filter((part) => part !== null && part !== '')
     .join(' · ');
   return (
