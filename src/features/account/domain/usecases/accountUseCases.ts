@@ -1,0 +1,33 @@
+import type { AddToList } from '@features/account/domain/usecases/addToList';
+import type { CreateList } from '@features/account/domain/usecases/createList';
+import type { DeleteList } from '@features/account/domain/usecases/deleteList';
+import type { GetAccount } from '@features/account/domain/usecases/getAccount';
+import type { GetAccountStates } from '@features/account/domain/usecases/getAccountStates';
+import type { GetFavorites } from '@features/account/domain/usecases/getFavorites';
+import type { GetList } from '@features/account/domain/usecases/getList';
+import type { GetLists } from '@features/account/domain/usecases/getLists';
+import type { GetRated } from '@features/account/domain/usecases/getRated';
+import type { GetRecommendations } from '@features/account/domain/usecases/getRecommendations';
+import type { RateTitle } from '@features/account/domain/usecases/rateTitle';
+import type { RemoveFromList } from '@features/account/domain/usecases/removeFromList';
+import type { SetFavorite } from '@features/account/domain/usecases/setFavorite';
+import type { SignIn } from '@features/account/domain/usecases/signIn';
+import type { SignOut } from '@features/account/domain/usecases/signOut';
+
+export type AccountUseCases = {
+  readonly getAccount: GetAccount;
+  readonly signIn: SignIn;
+  readonly signOut: SignOut;
+  readonly getAccountStates: GetAccountStates;
+  readonly rateTitle: RateTitle;
+  readonly setFavorite: SetFavorite;
+  readonly getFavorites: GetFavorites;
+  readonly getRated: GetRated;
+  readonly getRecommendations: GetRecommendations;
+  readonly getLists: GetLists;
+  readonly getList: GetList;
+  readonly createList: CreateList;
+  readonly addToList: AddToList;
+  readonly removeFromList: RemoveFromList;
+  readonly deleteList: DeleteList;
+};
