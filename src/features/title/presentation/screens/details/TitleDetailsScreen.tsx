@@ -61,13 +61,13 @@ const infoRows = (details: TitleDetails, t: Translate, locale: string | undefine
     details.creators.length > 0
       ? {
           label: t({ key: isShow ? 'title.info.createdBy' : 'title.info.director' }),
-          value: details.creators.map((person) => person.name).join(', '),
+          value: details.creators.map((person) => person.name).join(t({ key: 'common.listSeparator' })),
         }
       : null,
     details.writers.length > 0
       ? {
           label: t({ key: 'title.info.writers' }),
-          value: details.writers.map((person) => person.name).join(', '),
+          value: details.writers.map((person) => person.name).join(t({ key: 'common.listSeparator' })),
         }
       : null,
     details.status !== null ? { label: t({ key: 'title.info.status' }), value: details.status } : null,
@@ -100,7 +100,9 @@ const infoRows = (details: TitleDetails, t: Translate, locale: string | undefine
     details.show !== null && details.show.networks.length > 0
       ? {
           label: t({ key: 'title.info.networks' }),
-          value: details.show.networks.map((network) => network.name).join(', '),
+          value: details.show.networks
+            .map((network) => network.name)
+            .join(t({ key: 'common.listSeparator' })),
         }
       : null,
     details.originalLanguage !== null
@@ -153,7 +155,7 @@ export const TitleDetailsScreen = ({
         }
         imageUri={summary.backdrop?.large ?? summary.poster?.large ?? null}
         metaLine={metaLine(details, t)}
-        genreLine={details.genres.map((genre) => genre.name).join(', ')}
+        genreLine={details.genres.map((genre) => genre.name).join(t({ key: 'common.listSeparator' }))}
       />
 
       <View style={styles.body}>

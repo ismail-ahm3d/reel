@@ -307,4 +307,6 @@ export const ar: Readonly<Record<string, string>> = {
   'department.crew': 'طاقم العمل',
   'department.lighting': 'إضاءة',
   'department.creator': 'إبداع',
+
+  'common.listSeparator': '، ',
 };
