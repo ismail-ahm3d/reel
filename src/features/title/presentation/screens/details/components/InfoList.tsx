@@ -44,7 +44,7 @@ const styles = StyleSheet.create((theme) => ({
   },
   cell: {
     width: '50%',
-    paddingRight: theme.spacing.m,
+    paddingEnd: theme.spacing.m,
     gap: theme.spacing.xxs,
   },
 }));

@@ -1,4 +1,5 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
+import { largeTitles } from '@shell/presentation/largeTitles';
 import { useTranslate } from '@shared/core/presentation/i18n/useTranslate';
 import { isMediaType } from '@shared/domain/model/media';
 import { useDependencies } from '@shell/presentation/dependencies';
@@ -12,7 +13,9 @@ export default function CreditsRoute() {
   if (!isMediaType(type)) return null;
   return (
     <>
-      <Stack.Screen options={{ title: t({ key: 'title.castAndCrew' }), headerLargeTitleEnabled: true }} />
+      <Stack.Screen
+        options={{ title: t({ key: 'title.castAndCrew' }), headerLargeTitleEnabled: largeTitles }}
+      />
       <CreditsScreen
         mediaRef={{ type, id: Number(id) }}
         useCases={title}

@@ -4,6 +4,7 @@ import { useLocale, useTranslate } from '@shared/core/presentation/i18n/useTrans
 import { AppIconButton } from '@shared/core/presentation/components/AppIconButton';
 import { AppImage } from '@shared/core/presentation/components/AppImage';
 import { AppText } from '@shared/core/presentation/components/AppText';
+import { departmentText } from '@shared/presentation/mappers/departmentText';
 import { formatDate } from '@shared/presentation/mappers/mediaText';
 import type { PersonDetails } from '@features/people/domain/model/personDetails';
 import { ExpandableText } from '@shared/presentation/components/ExpandableText';
@@ -40,7 +41,7 @@ export const PersonHeader = ({ person, age, onShare }: PersonHeaderProps) => {
           </AppText>
           {person.knownForDepartment !== null && (
             <AppText role="title" scale="medium" color="onSurfaceVariant">
-              {person.knownForDepartment}
+              {departmentText(person.knownForDepartment, t)}
             </AppText>
           )}
           {bornLine !== null && (

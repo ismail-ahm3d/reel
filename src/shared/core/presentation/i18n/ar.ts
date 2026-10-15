@@ -177,7 +177,6 @@ export const ar: Readonly<Record<string, string>> = {
   'gallery.kind.posters': 'ملصقات',
   'gallery.kind.profiles': 'صور',
   'gallery.kind.stills': 'لقطات',
-  'people.acting': 'تمثيل',
   'people.alsoKnownAs': 'يُعرف أيضًا بـ {{names}}',
   'people.photos': 'صور',
   'people.noCreditsTitle': 'لا توجد أعمال',
@@ -294,4 +293,18 @@ export const ar: Readonly<Record<string, string>> = {
   'title.allInWatchlist': 'الكل في قائمة المشاهدة',
 
   'account.removeMessage': 'يمكنك إضافتها مجددًا في أي وقت من صفحاتها.',
+
+  'department.acting': 'تمثيل',
+  'department.directing': 'إخراج',
+  'department.writing': 'كتابة',
+  'department.production': 'إنتاج',
+  'department.camera': 'تصوير',
+  'department.editing': 'مونتاج',
+  'department.sound': 'صوت',
+  'department.art': 'تصميم فني',
+  'department.costume': 'أزياء ومكياج',
+  'department.visualEffects': 'مؤثرات بصرية',
+  'department.crew': 'طاقم العمل',
+  'department.lighting': 'إضاءة',
+  'department.creator': 'إبداع',
 };

@@ -1,4 +1,5 @@
 import { Stack } from 'expo-router';
+import { largeTitles } from '@shell/presentation/largeTitles';
 import { useTranslate } from '@shared/core/presentation/i18n/useTranslate';
 import { useDependencies } from '@shell/presentation/dependencies';
 import { appNavigation } from '@shell/presentation/navigation';
@@ -10,7 +11,7 @@ export default function LibraryRoute() {
   const t = useTranslate();
   return (
     <>
-      <Stack.Screen options={{ title: t({ key: 'tabs.library' }), headerLargeTitleEnabled: true }} />
+      <Stack.Screen options={{ title: t({ key: 'tabs.library' }), headerLargeTitleEnabled: largeTitles }} />
       <SettingsButton />
       <LibraryScreen
         account={account}

@@ -1,5 +1,6 @@
 import { Alert } from 'react-native';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
+import { largeTitles } from '@shell/presentation/largeTitles';
 import { useTranslate } from '@shared/core/presentation/i18n/useTranslate';
 import { useDependencies } from '@shell/presentation/dependencies';
 import { appNavigation } from '@shell/presentation/navigation';
@@ -11,7 +12,7 @@ export default function ListRoute() {
   const t = useTranslate();
   return (
     <>
-      <Stack.Screen options={{ title: name ?? '', headerLargeTitleEnabled: true }} />
+      <Stack.Screen options={{ title: name ?? '', headerLargeTitleEnabled: largeTitles }} />
       <ListScreen
         listId={Number(id)}
         useCases={account}

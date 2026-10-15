@@ -1,4 +1,5 @@
 import { Stack } from 'expo-router';
+import { largeTitles } from '@shell/presentation/largeTitles';
 import { useTranslate } from '@shared/core/presentation/i18n/useTranslate';
 import { useDependencies } from '@shell/presentation/dependencies';
 import { appNavigation } from '@shell/presentation/navigation';
@@ -10,7 +11,7 @@ export default function ShowsRoute() {
   const t = useTranslate();
   return (
     <>
-      <Stack.Screen options={{ title: t({ key: 'tabs.tv' }), headerLargeTitleEnabled: true }} />
+      <Stack.Screen options={{ title: t({ key: 'tabs.tv' }), headerLargeTitleEnabled: largeTitles }} />
       <SettingsButton />
       <DiscoverHomeScreen
         type="tv"

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { Text, type StyleProp, type TextStyle } from 'react-native';
+import { Platform, Text, type StyleProp, type TextStyle } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import type { BaseColor, BaseTypography, TypeScale } from '@shared/core/presentation/theme/contract';
 
@@ -48,9 +48,15 @@ export const AppText = ({
   </Text>
 );
 
-const styles = StyleSheet.create((theme) => ({
+const styles = StyleSheet.create((theme, rt) => ({
   text: (role: keyof BaseTypography, scale: TypeScale, color: keyof BaseColor) => ({
     ...theme.typography[role][scale],
+    // Tracking is tuned for Latin text. Arabic letters join, so spacing them apart is wrong, and
+    // Android measures spaced Arabic too narrow and cuts short words off with an ellipsis.
+    ...(rt.rtl ? { letterSpacing: 0 } : {}),
+    // iOS left-aligns text inside horizontal lists in right-to-left; 'left' means the start edge
+    // there (it is swapped in RTL), which puts it back on the right like the rest of the app.
+    ...(rt.rtl ? Platform.select({ ios: { textAlign: 'left' as const }, default: {} }) : {}),
     color: theme.colors[color],
   }),
 }));

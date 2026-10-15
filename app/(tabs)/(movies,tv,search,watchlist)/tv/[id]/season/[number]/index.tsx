@@ -1,4 +1,5 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
+import { largeTitles } from '@shell/presentation/largeTitles';
 import { useDependencies } from '@shell/presentation/dependencies';
 import { appNavigation } from '@shell/presentation/navigation';
 import { SeasonScreen } from '@features/title/presentation/screens/season/SeasonScreen';
@@ -8,7 +9,7 @@ export default function SeasonRoute() {
   const { title } = useDependencies();
   return (
     <>
-      <Stack.Screen options={{ title: name ?? '', headerLargeTitleEnabled: true }} />
+      <Stack.Screen options={{ title: name ?? '', headerLargeTitleEnabled: largeTitles }} />
       <SeasonScreen
         showId={Number(id)}
         seasonNumber={Number(number)}

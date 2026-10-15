@@ -1,4 +1,5 @@
 import { Stack, useLocalSearchParams } from 'expo-router';
+import { largeTitles } from '@shell/presentation/largeTitles';
 import { useTranslate } from '@shared/core/presentation/i18n/useTranslate';
 import { isBrowseSourceKind, type BrowseSource } from '@shared/domain/model/browseSource';
 import { isMediaType } from '@shared/domain/model/media';
@@ -26,7 +27,7 @@ export default function BrowseRoute() {
       <Stack.Screen
         options={{
           title: title ?? t({ key: type === 'movie' ? 'discover.allMovies' : 'discover.allTv' }),
-          headerLargeTitleEnabled: true,
+          headerLargeTitleEnabled: largeTitles,
         }}
       />
       <BrowseScreen
