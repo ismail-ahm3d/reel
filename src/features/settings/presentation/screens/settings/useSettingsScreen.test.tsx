@@ -7,7 +7,7 @@ import { makeUpdateSettings } from '@features/settings/domain/usecases/updateSet
 import { useSettingsScreen } from '@features/settings/presentation/screens/settings/useSettingsScreen';
 
 const setup = async ({ restarts }: { restarts: boolean }) => {
-  const fake = makeFakeSettingsRepository({ language: 'en', theme: 'system' });
+  const fake = makeFakeSettingsRepository({ language: 'en', theme: 'system', autoplayFeatured: true });
   const deps = { settings: fake.repository, deviceLanguageCode: 'en' };
   const onThemeChanged = jest.fn();
   const onLanguageChanged = jest.fn(() => Promise.resolve(restarts));

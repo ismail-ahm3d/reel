@@ -26,6 +26,7 @@ export type SettingsView = {
   readonly retry: () => void;
   readonly selectLanguage: (language: Language) => void;
   readonly selectTheme: (theme: ThemePreference) => void;
+  readonly setAutoplayFeatured: (on: boolean) => void;
   readonly dismissActionError: () => void;
 };
 
@@ -76,6 +77,11 @@ export const useSettingsScreen = ({
       if (current?.theme === theme) return;
       selectionFeedback();
       update.mutate({ theme });
+    },
+    setAutoplayFeatured: (on) => {
+      if (current?.autoplayFeatured === on) return;
+      selectionFeedback();
+      update.mutate({ autoplayFeatured: on });
     },
     dismissActionError: () => {
       setActionError(null);

@@ -2,6 +2,7 @@ import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import { AppIcon } from '@shared/core/presentation/components/AppIcon';
 import { AppPressable } from '@shared/core/presentation/components/AppPressable';
+import { AppSwitch } from '@shared/core/presentation/components/AppSwitch';
 import { AppText } from '@shared/core/presentation/components/AppText';
 
 export type SettingsRowProps = {
@@ -11,9 +12,11 @@ export type SettingsRowProps = {
   /** Present on choice rows: the row is pressable and shows a check when selected. */
   readonly selected?: boolean;
   readonly onPress?: () => void;
+  /** Present on on/off rows: a switch at the trailing edge. */
+  readonly toggle?: { readonly on: boolean; readonly onChange: (on: boolean) => void };
 };
 
-export const SettingsRow = ({ label, value, selected, onPress }: SettingsRowProps) => {
+export const SettingsRow = ({ label, value, selected, onPress, toggle }: SettingsRowProps) => {
   const content = (
     <View style={styles.row}>
       <AppText role="body" scale="large" style={{ flex: 1 }}>
@@ -23,6 +26,9 @@ export const SettingsRow = ({ label, value, selected, onPress }: SettingsRowProp
         <AppText role="body" scale="large" color="onSurfaceVariant">
           {value}
         </AppText>
+      )}
+      {toggle !== undefined && (
+        <AppSwitch value={toggle.on} onValueChange={toggle.onChange} accessibilityLabel={label} />
       )}
       {selected === true && (
         <AppIcon name={{ ios: 'checkmark', android: 'check' }} size="m" color="primary" />

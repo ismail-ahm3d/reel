@@ -71,6 +71,15 @@ export const SettingsScreen = ({ accountSection, ...props }: SettingsScreenProps
           />
         ))}
       </SettingsGroup>
+      <SettingsGroup title={t({ key: 'settings.home' })} footer={t({ key: 'settings.autoplayFooter' })}>
+        {[
+          <SettingsRow
+            key="autoplay"
+            label={t({ key: 'settings.autoplayFeatured' })}
+            toggle={{ on: settings.autoplayFeatured, onChange: view.setAutoplayFeatured }}
+          />,
+        ]}
+      </SettingsGroup>
       <SettingsGroup title={t({ key: 'settings.about' })} footer={t({ key: 'settings.attribution' })}>
         {[<SettingsRow key="version" label={t({ key: 'settings.version' })} value={view.appVersion} />]}
       </SettingsGroup>

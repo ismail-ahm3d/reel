@@ -141,6 +141,10 @@ export const en: Readonly<Record<string, string>> = {
   'settings.theme.light': 'Light',
   'settings.theme.dark': 'Dark',
   'settings.themeFooter': 'System matches your device’s appearance.',
+  'settings.home': 'Home',
+  'settings.autoplayFeatured': 'Auto-Scroll Featured',
+  'settings.autoplayFooter':
+    'Featured titles on Movies and TV move on every few seconds. They stay put while Reduce Motion is on.',
   'settings.about': 'About',
   'settings.attribution': 'This product uses the TMDB API but is not endorsed or certified by TMDB.',
   'settings.version': 'Version',

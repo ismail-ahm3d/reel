@@ -18,6 +18,8 @@ export type DiscoverHomeScreenProps = {
   readonly onOpenMedia: (ref: MediaRef) => void;
   readonly onOpenCategory: (type: MediaType, category: Category) => void;
   readonly onBrowse: (type: MediaType, genre: Genre | null) => void;
+  /** The user's setting, already off while the screen is out of sight. */
+  readonly autoplayFeatured: boolean;
 };
 
 export type HomeRail = {
@@ -28,6 +30,7 @@ export type HomeRail = {
 export type DiscoverHomeView = {
   readonly type: MediaType;
   readonly featured: readonly MediaSummary[];
+  readonly autoplayFeatured: boolean;
   readonly rails: readonly HomeRail[];
   readonly genres: readonly Genre[];
   readonly trendingPeriod: TrendingPeriod;
@@ -53,6 +56,7 @@ export const useDiscoverHomeScreen = ({
   onOpenMedia,
   onOpenCategory,
   onBrowse,
+  autoplayFeatured,
 }: DiscoverHomeScreenProps): DiscoverHomeView => {
   const [isRefreshing, setRefreshing] = useState(false);
   const [trendingPeriod, setTrendingPeriod] = useState<TrendingPeriod>('week');
@@ -98,6 +102,7 @@ export const useDiscoverHomeScreen = ({
   return {
     type,
     featured,
+    autoplayFeatured,
     rails,
     genres: genreList.data ?? [],
     trendingPeriod,

@@ -141,6 +141,10 @@ export const ar: Readonly<Record<string, string>> = {
   'settings.theme.light': 'فاتح',
   'settings.theme.dark': 'داكن',
   'settings.themeFooter': 'خيار النظام يطابق مظهر جهازك.',
+  'settings.home': 'الرئيسية',
+  'settings.autoplayFeatured': 'تمرير المميز تلقائيًا',
+  'settings.autoplayFooter':
+    'تنتقل الأعمال المميزة في الأفلام والمسلسلات إلى التالي كل بضع ثوانٍ، وتتوقف عند تفعيل «تقليل الحركة».',
   'settings.about': 'حول',
   'settings.attribution': 'يستخدم هذا المنتج واجهة TMDB البرمجية لكنه غير معتمد أو مصدّق من TMDB.',
   'settings.version': 'الإصدار',

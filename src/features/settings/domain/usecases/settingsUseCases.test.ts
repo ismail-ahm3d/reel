@@ -9,29 +9,31 @@ describe('settings use cases', () => {
     const fake = makeFakeSettingsRepository();
     expect(await makeGetSettings({ settings: fake.repository, deviceLanguageCode: 'ar' })()).toEqual({
       ok: true,
-      value: { language: 'ar', theme: 'system' },
+      value: { language: 'ar', theme: 'system', autoplayFeatured: true },
     });
     expect(makeGetStartupSettings({ settings: fake.repository, deviceLanguageCode: 'fr' })()).toEqual({
       language: 'en',
       theme: 'system',
+      autoplayFeatured: true,
     });
   });
 
   it('saves a change over what is stored', async () => {
-    const fake = makeFakeSettingsRepository({ language: 'ar', theme: 'system' });
+    const fake = makeFakeSettingsRepository({ language: 'ar', theme: 'system', autoplayFeatured: true });
     const result = await makeUpdateSettings({ settings: fake.repository, deviceLanguageCode: 'en' })({
       theme: 'dark',
     });
-    expect(result).toEqual({ ok: true, value: { language: 'ar', theme: 'dark' } });
-    expect(fake.stored()).toEqual({ language: 'ar', theme: 'dark' });
+    expect(result).toEqual({ ok: true, value: { language: 'ar', theme: 'dark', autoplayFeatured: true } });
+    expect(fake.stored()).toEqual({ language: 'ar', theme: 'dark', autoplayFeatured: true });
   });
 
   it('starts with the defaults when stored settings cannot be read', () => {
-    const fake = makeFakeSettingsRepository({ language: 'ar', theme: 'dark' });
+    const fake = makeFakeSettingsRepository({ language: 'ar', theme: 'dark', autoplayFeatured: true });
     fake.failWith(new StorageError({ kind: 'corrupt' }));
     expect(makeGetStartupSettings({ settings: fake.repository, deviceLanguageCode: 'en' })()).toEqual({
       language: 'en',
       theme: 'system',
+      autoplayFeatured: true,
     });
   });
 });

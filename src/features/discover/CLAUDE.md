@@ -16,3 +16,4 @@ Status: done.
 - "Highest rated" and "Newest" add vote floors in the data source, or obscure titles fill the list.
 - Browse starts from a `BrowseSource` (genre preselected; keyword, studio or network as `with_keywords`/`with_companies`/`with_networks`); resetting filters keeps the source.
 - Streaming services are the region's twenty most prominent, filtered with `with_watch_providers` joined by `|` (any of).
+- The featured carousel autoplays every 5 s when the route says so (setting on, screen focused) and Reduce Motion is off; touching it pauses. `scrollToOffset` counts from the first card in either direction, but scroll events report offsets from the physical left, so the dots' progress is mirrored in RTL and the target offset is not.
