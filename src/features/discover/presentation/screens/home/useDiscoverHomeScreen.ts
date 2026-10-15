@@ -4,7 +4,8 @@ import type { AppError } from '@shared/core/domain/appError';
 import { getOrThrow } from '@shared/core/domain/outcome';
 import { selectionFeedback } from '@shared/core/presentation/feedback/haptics';
 import type { Genre } from '@shared/domain/model/genre';
-import type { MediaRef, MediaSummary, MediaType } from '@shared/domain/model/media';
+import { mediaRefKey, type MediaRef, type MediaSummary, type MediaType } from '@shared/domain/model/media';
+import type { TitleLogo } from '@shared/domain/model/titleLogo';
 import type { GenreUseCases } from '@shared/domain/usecases/sharedUseCases';
 import { genreKeys } from '@shared/presentation/query/sharedKeys';
 import { categoriesOf, type Category, type TrendingPeriod } from '@features/discover/domain/model/category';
@@ -18,6 +19,8 @@ export type DiscoverHomeScreenProps = {
   readonly onOpenMedia: (ref: MediaRef) => void;
   readonly onOpenCategory: (type: MediaType, category: Category) => void;
   readonly onBrowse: (type: MediaType, genre: Genre | null) => void;
+  /** The user's setting, already off while the screen is out of sight. */
+  readonly autoplayFeatured: boolean;
 };
 
 export type HomeRail = {
@@ -28,6 +31,9 @@ export type HomeRail = {
 export type DiscoverHomeView = {
   readonly type: MediaType;
   readonly featured: readonly MediaSummary[];
+  readonly autoplayFeatured: boolean;
+  /** A featured title's card: the logo, null to type the title, undefined while it loads. */
+  readonly logoOf: (media: MediaSummary) => TitleLogo | null | undefined;
   readonly rails: readonly HomeRail[];
   readonly genres: readonly Genre[];
   readonly trendingPeriod: TrendingPeriod;
@@ -53,6 +59,7 @@ export const useDiscoverHomeScreen = ({
   onOpenMedia,
   onOpenCategory,
   onBrowse,
+  autoplayFeatured,
 }: DiscoverHomeScreenProps): DiscoverHomeView => {
   const [isRefreshing, setRefreshing] = useState(false);
   const [trendingPeriod, setTrendingPeriod] = useState<TrendingPeriod>('week');
@@ -82,6 +89,22 @@ export const useDiscoverHomeScreen = ({
   const featured = todayItems.filter((media) => media.backdrop !== null).slice(0, featuredCount);
   const featuredIds = new Set(featured.map((media) => media.ref.id));
 
+  const logos = useQueries({
+    queries: featured.map((media) => ({
+      queryKey: discoverKeys.logo(media.ref),
+      queryFn: async () => getOrThrow(await useCases.getTitleLogo(media.ref)),
+      staleTime: Infinity, // a title's logo does not change during a session
+    })),
+  });
+  const logoByKey = new Map(
+    featured.map((media, index) => {
+      const query = logos[index];
+      // A failed lookup types the title, like a title without a logo.
+      const logo = query === undefined || query.isPending ? undefined : (query.data ?? null);
+      return [mediaRefKey(media.ref), logo] as const;
+    }),
+  );
+
   const rails: HomeRail[] = categories.map((category, index) => ({
     category: category === 'trending' && trendingPeriod === 'day' ? 'trendingToday' : category,
     items:
@@ -98,6 +121,8 @@ export const useDiscoverHomeScreen = ({
   return {
     type,
     featured,
+    autoplayFeatured,
+    logoOf: (media) => logoByKey.get(mediaRefKey(media.ref)),
     rails,
     genres: genreList.data ?? [],
     trendingPeriod,

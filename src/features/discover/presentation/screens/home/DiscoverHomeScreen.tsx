@@ -35,7 +35,12 @@ export const DiscoverHomeScreen = (props: DiscoverHomeScreenProps) => {
         />
       }
     >
-      <FeaturedCarousel items={view.featured} onSelect={view.openMedia} />
+      <FeaturedCarousel
+        items={view.featured}
+        onSelect={view.openMedia}
+        autoplay={view.autoplayFeatured}
+        logoOf={view.logoOf}
+      />
       <GenreStrip
         genres={view.genres}
         allLabel={t({ key: 'discover.browseAll' })}

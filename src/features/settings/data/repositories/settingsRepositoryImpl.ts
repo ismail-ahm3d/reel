@@ -9,5 +9,10 @@ export const makeSettingsRepository = ({
 }): SettingsRepository => ({
   read: () => local.read(),
   readNow: () => local.readSync(),
-  save: (settings) => local.write({ language: settings.language, theme: settings.theme }),
+  save: (settings) =>
+    local.write({
+      language: settings.language,
+      theme: settings.theme,
+      autoplayFeatured: settings.autoplayFeatured,
+    }),
 });

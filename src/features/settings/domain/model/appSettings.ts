@@ -9,6 +9,8 @@ export const themePreferences: readonly ThemePreference[] = ['system', 'light', 
 export type AppSettings = {
   readonly language: Language;
   readonly theme: ThemePreference;
+  /** Whether the featured carousel on the Movies and TV homes moves on by itself. */
+  readonly autoplayFeatured: boolean;
 };
 
 /** Arabic reads right to left; the layout follows. */
@@ -18,4 +20,5 @@ export const isRightToLeft = (language: Language): boolean => language === 'ar';
 export const defaultSettings = (deviceLanguageCode: string): AppSettings => ({
   language: deviceLanguageCode === 'ar' ? 'ar' : 'en',
   theme: 'system',
+  autoplayFeatured: true,
 });

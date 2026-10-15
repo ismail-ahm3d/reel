@@ -1,13 +1,22 @@
-import { isTitleDto, toImageSet, toMediaSummary, toPage } from '@shared/data/mappers/tmdbMappers';
+import {
+  isTitleDto,
+  toImageSet,
+  toMediaSummary,
+  toPage,
+  toTitleLogo,
+} from '@shared/data/mappers/tmdbMappers';
 import type { DiscoverRepository } from '@features/discover/domain/repositories/discoverRepository';
 import type { DiscoverRemoteDataSource } from '@features/discover/data/datasources/remote/discoverRemoteDataSource';
 
 export const makeDiscoverRepository = ({
   remote,
   region,
+  language,
 }: {
   remote: DiscoverRemoteDataSource;
   region: string;
+  /** ISO 639-1: the logo language to prefer. */
+  language: string;
 }): DiscoverRepository => ({
   category: async (type, category, page) => {
     const dto = await remote.category(type, category, page);
@@ -25,4 +34,5 @@ export const makeDiscoverRepository = ({
       }))
       .sort((a, b) => a.priority - b.priority)
       .map(({ id, name, logo }) => ({ id, name, logo })),
+  logo: async (ref) => toTitleLogo(await remote.logos(ref), language),
 });
